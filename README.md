@@ -21,4 +21,5 @@ You can also test the idea behind it directly. Simply follow the link to the lab
 + [gobpmnCamunda](https://github.com/deemount/gobpmnCamunda)
 + [gobpmnDiagram](https://github.com/deemount/gobpmnDiagram)
 + [gobpmnBuilder](https://github.com/deemount/gobpmnBuilder)
++ [gobpmnHash](https://github.com/deemount/gobpmnHash)
 + [gobpmnReflection](https://github.com/deemount/gobpmnReflection)
