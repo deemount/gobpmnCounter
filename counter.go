@@ -1,9 +1,11 @@
 package gobpmn_counter
 
 import (
+	"reflect"
 	"strings"
 
 	"github.com/deemount/gobpmnCounter/internals/utils"
+	gobpmn_reflection "github.com/deemount/gobpmnReflection"
 )
 
 // Count ...
@@ -24,6 +26,40 @@ type Count struct {
 	Flow             int
 	Shape            int
 	Edge             int
+	Words            map[int][]string
+}
+
+// Counter ...
+func (c *Count) Counter(p interface{}) interface{} {
+
+	ref := gobpmn_reflection.New(p)
+	ref.Interface().Allocate().Maps().Assign()
+
+	switch true {
+	case len(ref.Anonym) > 0:
+		for _, field := range ref.Anonym {
+			n := ref.Temporary.FieldByName(field)
+			for i := 0; i < n.NumField(); i++ {
+				name := n.Type().Field(i).Name
+				switch n.Field(i).Kind() {
+				case reflect.Struct:
+					c.countPool(field, name)
+					c.countMessage(field, name)
+					c.countElements(name)
+				}
+			}
+		}
+	case len(ref.Anonym) == 0:
+		for _, field := range ref.Rflct {
+			c.countProcess(field)
+			c.countElements(field)
+		}
+	}
+
+	c.countWords()
+
+	return c
+
 }
 
 /*
@@ -97,5 +133,18 @@ func (c *Count) countElements(field string) {
 
 		c.Shape++
 
+	}
+}
+
+/*
+ * @Words
+ */
+
+// countWords ...
+func (c Count) countWords() {
+	l := 0
+	length := len(c.Words)
+	for i := 0; i < length; i++ {
+		l += len(c.Words[i])
 	}
 }
