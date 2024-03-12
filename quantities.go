@@ -8,8 +8,8 @@ import (
 	gobpmn_reflection "github.com/deemount/gobpmnReflection"
 )
 
-// Count ...
-type Count struct {
+// Quantities ...
+type Quantities struct {
 	Process          int
 	Participant      int
 	Message          int
@@ -29,8 +29,8 @@ type Count struct {
 	Words            map[int][]string
 }
 
-// Counter ...
-func (c *Count) Counter(p interface{}) interface{} {
+// In ...
+func (q *Quantities) In(p interface{}) interface{} {
 
 	ref := gobpmn_reflection.New(p)
 	ref.Interface().Allocate().Maps().Assign()
@@ -43,108 +43,97 @@ func (c *Count) Counter(p interface{}) interface{} {
 				name := n.Type().Field(i).Name
 				switch n.Field(i).Kind() {
 				case reflect.Struct:
-					c.countPool(field, name)
-					c.countMessage(field, name)
-					c.countElements(name)
+					q.countPool(field, name)
+					q.countMessage(field, name)
+					q.countElements(name)
 				}
 			}
 		}
 	case len(ref.Anonym) == 0:
 		for _, field := range ref.Rflct {
-			c.countProcess(field)
-			c.countElements(field)
+			q.countProcess(field)
+			q.countElements(field)
 		}
 	}
 
-	c.countWords()
+	q.countWords()
 
-	return c
+	return q
 
 }
 
 /*
- * @Base
+ * @private
  */
 
 // countPool ...
-func (c *Count) countPool(field, reflectionField string) {
+func (q *Quantities) countPool(field, reflectionField string) {
 	if strings.ToLower(field) == "pool" {
 		if strings.Contains(reflectionField, "Process") {
-			c.Process++
+			q.Process++
 		}
 		if strings.Contains(reflectionField, "ID") {
-			c.Participant++
-			c.Shape++
+			q.Participant++
+			q.Shape++
 		}
 	}
 }
 
 // countMessage ...
-func (c *Count) countMessage(field, reflectionField string) {
+func (q *Quantities) countMessage(field, reflectionField string) {
 	if strings.ToLower(field) == "message" {
 		if strings.Contains(reflectionField, "Message") {
-			c.Message++
-			c.Edge++
+			q.Message++
+			q.Edge++
 		}
 	}
 }
 
-/*
- * @Processes
- */
-
 // countProcess ...
-func (c *Count) countProcess(field string) {
+func (q *Quantities) countProcess(field string) {
 	if strings.Contains(field, "Process") {
-		c.Process++
+		q.Process++
 	}
 }
 
-/*
- * @Elements
- */
-
-func (c *Count) countElements(field string) {
+// countElements ...
+func (q *Quantities) countElements(field string) {
 
 	if utils.After(field, "From") == "" {
 
 		switch true {
 		case strings.Contains(field, "StartEvent"):
-			c.StartEvent++
+			q.StartEvent++
 		case strings.Contains(field, "EndEvent"):
-			c.EndEvent++
+			q.EndEvent++
 		case strings.Contains(field, "BusinessRuleTask"):
-			c.BusinessRuleTask++
+			q.BusinessRuleTask++
 		case strings.Contains(field, "ManualTask"):
-			c.ManualTask++
+			q.ManualTask++
 		case strings.Contains(field, "ReceiveTask"):
-			c.ReceiveTask++
+			q.ReceiveTask++
 		case strings.Contains(field, "ScriptTask"):
-			c.ScriptTask++
+			q.ScriptTask++
 		case strings.Contains(field, "SendTask"):
-			c.SendTask++
+			q.SendTask++
 		case strings.Contains(field, "ServiceTask"):
-			c.ServiceTask++
+			q.ServiceTask++
 		case strings.Contains(field, "Task"):
-			c.Task++
+			q.Task++
 		case strings.Contains(field, "UserTask"):
-			c.UserTask++
+			q.UserTask++
 		}
 
-		c.Shape++
+		q.Shape++
 
 	}
 }
 
-/*
- * @Words
- */
-
 // countWords ...
-func (c Count) countWords() {
+func (q Quantities) countWords() {
 	l := 0
-	length := len(c.Words)
+	length := len(q.Words)
 	for i := 0; i < length; i++ {
-		l += len(c.Words[i])
+		l += len(q.Words[i])
 	}
 }
