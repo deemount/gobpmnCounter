@@ -30,7 +30,7 @@ type Quantities struct {
 }
 
 // In ...
-func (q *Quantities) In(p interface{}) interface{} {
+func (q *Quantities) In(p interface{}) *Quantities {
 
 	ref := gobpmn_reflection.New(p)
 	ref.Interface().Allocate().Maps().Assign()
