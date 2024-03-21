@@ -4,7 +4,7 @@ gobpmnCounter is a tool for counting the elements, shapes and egdes present in a
 
 ## Wiki
 
-The [documentation](https://github.com/deemount/gobpmnCounter/wiki) is now written in the wiki of the respective module
+Read the [documentation](https://github.com/deemount/gobpmnCounter/wiki)
 
 **Start here** [gobpmn](https://github.com/deemount/gobpmn)
 

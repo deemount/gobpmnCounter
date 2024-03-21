@@ -1,2 +1,4 @@
 github.com/deemount/gobpmnReflection v0.0.0-20240311195407-66268668805a h1:NSd968TGgWy0m8tPU+nxPzzWHkWpnGU1Hk9bHDJ/yhs=
 github.com/deemount/gobpmnReflection v0.0.0-20240311195407-66268668805a/go.mod h1:NhbSOQE5lfqYvNkZXsm6xWTq3Wpy5xBPaERNqM/0OgI=
+github.com/deemount/gobpmnReflection v0.0.0-20240315112013-036495e4c08d h1:yQY4ikw/HuvVlPu3hGc0X8gntQnSbLqMnUw/nHRRCKU=
+github.com/deemount/gobpmnReflection v0.0.0-20240315112013-036495e4c08d/go.mod h1:j8WCmdzEkTq/FVsWJAdoPtjTiRryLZp/WjOLcIqtt5c=
