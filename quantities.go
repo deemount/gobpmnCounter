@@ -72,6 +72,7 @@ func (q *Quantities) In(p interface{}) *Quantities {
 				case reflect.Struct:
 					q.countPool(field, name)
 					q.countMessage(field, name)
+					q.countFlow(name)
 					q.countElements(name)
 				}
 			}
@@ -81,6 +82,7 @@ func (q *Quantities) In(p interface{}) *Quantities {
 	case len(ref.Anonym) == 0:
 		for _, field := range ref.Rflct {
 			q.countProcess(field)
+			q.countFlow(field)
 			q.countElements(field)
 		}
 	}
@@ -132,6 +134,16 @@ func (q *Quantities) countMessage(field, reflectionField string) {
 func (q *Quantities) countProcess(field string) {
 	if strings.Contains(field, "Process") {
 		q.Process++
+	}
+}
+
+// countFlow counts all the flows in the BPMN model.
+// Ruleset:
+//   - If the field contains the word "From" then it is a flow.
+func (q *Quantities) countFlow(field string) {
+	if strings.Contains(field, "From") {
+		q.Flow++
+		q.Edge++
 	}
 }
 
